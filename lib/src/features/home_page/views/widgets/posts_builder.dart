@@ -2,17 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/enums/enums.dart';
+import '../../../../core/shared/shared.dart';
 import '../../../../widgets/loading_indidactor.dart';
 import '../../../../widgets/no_content_message_widget.dart';
 import '../../../add_post_page/views/add_post_page.dart';
 import '../../providers/provider.dart';
 import 'post_card.dart';
 
-class PostsBuilder extends ConsumerWidget {
+class PostsBuilder extends ConsumerStatefulWidget {
   const PostsBuilder({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PostsBuilder> createState() => _PostsBuilderState();
+}
+
+class _PostsBuilderState extends ConsumerState<PostsBuilder> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true; // Keeps widget alive in memory
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context); // Required for keeping alive
+
     final length = ref.watch(homeProvider.select((state) => state.posts?.length));
 
     if (length == null) {
@@ -34,8 +46,9 @@ class PostsBuilder extends ConsumerWidget {
       final posts = ref.read(homeProvider.select((state) => state.posts));
 
       return SliverPadding(
-        padding: const EdgeInsets.only(bottom: 80),
+        padding: EdgeInsets.only(bottom: userType == UserType.USER ? 0 : 10),
         sliver: SliverList.separated(
+          key: const PageStorageKey<String>('imageList'),
           itemCount: posts?.length ?? 0,
           separatorBuilder: (context, index) => const SizedBox(height: 2),
           itemBuilder: (context, index) {

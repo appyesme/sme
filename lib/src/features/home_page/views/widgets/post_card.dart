@@ -59,7 +59,7 @@ class _PostCardState extends ConsumerState<PostCard> with AutomaticKeepAliveClie
         children: [
           Positioned.fill(
             child: PageView(
-              key: ValueKey(post.id!),
+              key: PageStorageKey(post.id ?? ''),
               onPageChanged: (value) => valueNotifier.value = value,
               physics: const ClampingScrollPhysics(),
               children: [
@@ -67,8 +67,20 @@ class _PostCardState extends ConsumerState<PostCard> with AutomaticKeepAliveClie
                   (e) => AspectRatio(
                     aspectRatio: 1,
                     child: CachedNetworkImage(
-                      imageUrl: e.url!,
+                      imageUrl: e.url ?? '',
                       fit: BoxFit.cover,
+                      fadeInDuration: Duration.zero,
+                      fadeOutDuration: Duration.zero,
+                      placeholder: (context, url) => CachedNetworkImage(
+                        imageUrl: e.url ?? '', // Load lower-quality thumbnail first
+                        memCacheWidth: 300,
+                        fit: BoxFit.cover,
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.broken_image,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -124,7 +136,7 @@ class _PostCardState extends ConsumerState<PostCard> with AutomaticKeepAliveClie
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    KColors.black,
+                    KColors.black40,
                     Colors.transparent,
                   ],
                 ),

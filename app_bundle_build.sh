@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "Did you update the app vesrion?"
+read -p "$(tput bold)$(tput setaf 3)Did you update the app vesrion & .env cred ?$(tput sgr0)" update
 
 echo "Select platform to build:"
 echo "1. Android (App Bundle)"
