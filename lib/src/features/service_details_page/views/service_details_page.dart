@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/constants/kcolors.dart';
 import '../../../core/shared/shared.dart';
+import '../../../services/api_services/appointments_api.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_text.dart';
 import '../../../widgets/loading_indidactor.dart';
@@ -174,12 +175,24 @@ class _ServiceDetailsPageState extends ConsumerState<ServiceDetailsPage> {
                                 fontSize: 18,
                               ),
                               const SizedBox(height: 15),
-                              AppText(
-                                '₹${service.charge ?? '-'}/-',
-                                maxLines: 1,
-                                fontFamily: 'Roboto',
-                                fontSize: 20,
-                                color: KColors.secondary,
+                              FutureBuilder<double?>(
+                                future: AppointmentsApi.getAppointmentPrice(service.id!, false),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const LoadingIndicator(
+                                      scale: 20,
+                                      strokeWidth: 2,
+                                    );
+                                  }
+
+                                  return AppText(
+                                    '₹${snapshot.data ?? '-'}/-',
+                                    maxLines: 1,
+                                    fontFamily: 'Roboto',
+                                    fontSize: 20,
+                                    color: KColors.secondary,
+                                  );
+                                },
                               ),
                               const SizedBox(height: 15),
                               AppText(
