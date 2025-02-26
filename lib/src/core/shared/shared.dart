@@ -7,9 +7,7 @@ import '../enums/enums.dart';
 const String appName = "sme";
 const String appLogo = "assets/images/logo.png";
 
-enum ApiVersion { v1, v2 }
-
-String apiUrlV1 = "${EnvOptions.API_URL}/${ApiVersion.v1.name}";
+String apiUrl = EnvOptions.API_URL;
 
 bool get isENTREPRENEUR => userType == UserType.ENTREPRENEUR;
 

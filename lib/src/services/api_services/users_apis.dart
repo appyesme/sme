@@ -11,7 +11,7 @@ import 'notifications_apis.dart';
 @immutable
 abstract class UsersApi {
   static Future<PaymentStatus?> verifyPaymentStatus(String appointmentId) async {
-    const path = "/payments/verify/status";
+    const path = "/v1/payments/verify/status";
     final response = await ApiHelper.get(path, queryParams: {"appointment_id": appointmentId});
     return response.fold<PaymentStatus?>(
       (l) => null,
@@ -20,7 +20,7 @@ abstract class UsersApi {
   }
 
   static Future<List<AppointmentModel>?> getBookedAppointments(String? date) async {
-    const path = "/users/appointments";
+    const path = "/v1/users/appointments";
     final response = await ApiHelper.get(path, queryParams: {"date": date});
 
     return response.fold<List<AppointmentModel>?>(
@@ -30,13 +30,13 @@ abstract class UsersApi {
   }
 
   static Future<UserModel?> getUserDetails(String profileId) async {
-    String path = "/users/$profileId/details";
+    String path = "/v1/users/$profileId/details";
     final response = await ApiHelper.get(path);
     return response.fold<UserModel?>((l) => null, (r) => UserModel.fromJson(r.data));
   }
 
   static Future<UserModel?> updateUserDetails(UserModel details) async {
-    String path = "/users/details";
+    String path = "/v1/users/details";
     final response = await ApiHelper.put(path, body: {
       "name": details.name,
       "email": details.email,
@@ -48,13 +48,13 @@ abstract class UsersApi {
   }
 
   static Future<String?> uploadPhoto({required FileX photo}) async {
-    const path = "/users/photo/upload";
+    const path = "/v1/users/photo/upload";
     final response = await ApiHelper.uploadFile(path, [photo]);
     return response.fold<String?>((l) => null, (r) => r.data);
   }
 
   static Future<List<NotificationModel>?> getNotifications({int page = 1}) async {
-    String path = "/users/notifications";
+    String path = "/v1/users/notifications";
     final response = await ApiHelper.get(path, queryParams: {"page": page, "limit": NotificationsApi.limit});
 
     return response.fold(
@@ -64,13 +64,13 @@ abstract class UsersApi {
   }
 
   static Future<int> getNotificationUnreadCount() async {
-    String path = "/users/notifications/unread-count";
+    String path = "/v1/users/notifications/unread-count";
     final response = await ApiHelper.get(path);
     return response.fold<int>((error) => 0, (success) => int.tryParse("${success.data}") ?? 0);
   }
 
   static Future<List<UserModel>?> getFavouriteUsers() async {
-    String path = "/users/favourites";
+    String path = "/v1/users/favourites";
     final response = await ApiHelper.get(path);
 
     return response.fold(
@@ -80,13 +80,13 @@ abstract class UsersApi {
   }
 
   static Future<bool> addToFavourite(String profileId) async {
-    String path = "/users/$profileId/favourite";
+    String path = "/v1/users/$profileId/favourite";
     final response = await ApiHelper.post(path);
     return response.fold<bool>((l) => false, (r) => r.data != null);
   }
 
   static Future<bool> removeToFavourite(String profileId) async {
-    String path = "/users/$profileId/favourite";
+    String path = "/v1/users/$profileId/favourite";
     final response = await ApiHelper.delete(path);
     return response.fold<bool>((l) => false, (r) => r.data != null);
   }

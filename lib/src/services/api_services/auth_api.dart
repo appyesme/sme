@@ -8,13 +8,13 @@ import '../file_service/file_service.dart';
 @immutable
 abstract class AuthApi {
   static Future<bool> verifyJwtTokenExpiration() async {
-    String path = "/auth/jwt/verify";
+    String path = "/v1/auth/jwt/verify";
     final response = await ApiHelper.get(path, queryParams: {"token": authToken});
     return response.fold((l) => false, (r) => r.data != null);
   }
 
   static Future<Map<String, dynamic>?> sendOTP(String phoneNumber, {required bool isSignIn}) async {
-    String path = "/auth/phone/send-otp";
+    String path = "/v1/auth/phone/send-otp";
     final response = await ApiHelper.post(
       path,
       queryParams: {"type": isSignIn ? "SIGNIN" : "SIGNUP"},
@@ -24,19 +24,19 @@ abstract class AuthApi {
   }
 
   static Future<Map<String, dynamic>?> signUp(Map<String, dynamic> body) async {
-    String path = "/auth/signup";
+    String path = "/v1/auth/signup";
     final response = await ApiHelper.post(path, body: body);
     return response.fold((l) => Toast.failure(l.message), (r) => r.data);
   }
 
   static Future<bool?> uploadVerificationDocs(String userId, List<FileX> files) async {
-    final path = "/auth/$userId/upload/verification-docs";
+    final path = "/v1/auth/$userId/upload/verification-docs";
     final response = await ApiHelper.uploadFile(path, files);
     return response.fold<bool?>((l) => Toast.failure(l.message), (r) => true);
   }
 
   static Future<Map<String, dynamic>?> verifyOtp(String phoneNumber, String otp) async {
-    String path = "/auth/phone/verify";
+    String path = "/v1/auth/phone/verify";
     final response = await ApiHelper.post(
       path,
       body: {"phone_number": phoneNumber, "otp": otp},
@@ -45,7 +45,7 @@ abstract class AuthApi {
   }
 
   static Future<bool> resendOtp(String phoneNumber) async {
-    String path = "/auth/phone/resend";
+    String path = "/v1/auth/phone/resend";
     final response = await ApiHelper.post(path, body: {"phone_number": phoneNumber});
     return response.fold<bool>((l) => false, (r) => true);
   }

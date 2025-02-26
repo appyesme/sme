@@ -10,7 +10,7 @@ import '../file_service/file_service.dart';
 @immutable
 abstract class ServicesApi {
   static Future<List<ServiceModel>?> getServices({String? profileID}) async {
-    String path = "/services";
+    String path = "/v1/services";
     final response = await ApiHelper.get(
       path,
       queryParams: {
@@ -25,13 +25,13 @@ abstract class ServicesApi {
   }
 
   static Future<ServiceModel?> getServiceByID(String serviceID) async {
-    String path = "/services/$serviceID";
+    String path = "/v1/services/$serviceID";
     final response = await ApiHelper.get(path);
     return response.fold<ServiceModel?>((l) => null, (r) => ServiceModel.fromJson(r.data));
   }
 
   static Future<List<ServiceDayModel>?> getServiceDays(String serviceId) async {
-    String path = "/services/$serviceId/days";
+    String path = "/v1/services/$serviceId/days";
     final response = await ApiHelper.get(path);
     return response.fold<List<ServiceDayModel>?>(
       (l) => null,
@@ -40,19 +40,19 @@ abstract class ServicesApi {
   }
 
   static Future<ServiceModel?> deleteService(String serviceId) async {
-    String path = "/services/$serviceId";
+    String path = "/v1/services/$serviceId";
     final response = await ApiHelper.delete(path);
     return response.fold<ServiceModel?>((l) => null, (r) => ServiceModel.fromJson(r.data));
   }
 
   static Future<ServiceModel?> deleteServiceImage(String serviceId, String serviceImageId) async {
-    String path = "/services/$serviceId/medias/$serviceImageId";
+    String path = "/v1/services/$serviceId/medias/$serviceImageId";
     final response = await ApiHelper.delete(path);
     return response.fold<ServiceModel?>((l) => null, (r) => ServiceModel.fromJson(r.data));
   }
 
   static Future<ServiceModel?> createUpdateService(ServiceModel service) async {
-    String path = "/services/${service.id ?? ''}";
+    String path = "/v1/services/${service.id ?? ''}";
     final isUpdate = service.id != null;
 
     final body = {
@@ -73,7 +73,7 @@ abstract class ServicesApi {
   }
 
   static Future<List<ServiceMediaModel>> uploadServiceMedia(String serviceId, List<FileX> files) async {
-    String path = "/services/$serviceId/medias";
+    String path = "/v1/services/$serviceId/medias";
     final response = await ApiHelper.uploadFile(path, files);
     return response.fold<List<ServiceMediaModel>>(
       (l) => [],
@@ -82,19 +82,19 @@ abstract class ServicesApi {
   }
 
   static Future<ServiceDayModel?> changeServiceDayEnableStatus(String serviceDayId, bool enabled) async {
-    String path = "/services-days/$serviceDayId";
+    String path = "/v1/services-days/$serviceDayId";
     final response = await ApiHelper.patch(path, body: {"enabled": enabled});
     return response.fold<ServiceDayModel?>((l) => null, (r) => ServiceDayModel.fromJson(r.data));
   }
 
   static Future<bool?> deleteTiming(String serviceDayId, String serviceTimingId) async {
-    String path = "/services-days/$serviceDayId/timings/$serviceTimingId";
+    String path = "/v1/services-days/$serviceDayId/timings/$serviceTimingId";
     final response = await ApiHelper.delete(path);
     return response.fold<bool?>((l) => Toast.failure(l.message), (r) => r.data != null);
   }
 
   static Future<List<ServiceTimingModel>?> getTimings(String serviceDayId) async {
-    String path = "/services-days/$serviceDayId/timings";
+    String path = "/v1/services-days/$serviceDayId/timings";
     final response = await ApiHelper.get(path);
     return response.fold<List<ServiceTimingModel>?>(
       (l) => null,
@@ -103,7 +103,7 @@ abstract class ServicesApi {
   }
 
   static Future<List<ServiceTimingModel>?> saveTimings(String serviceDayId, List<ServiceTimingModel> timings) async {
-    String path = "/services-days/$serviceDayId/timings";
+    String path = "/v1/services-days/$serviceDayId/timings";
     final response = await ApiHelper.put(
       path,
       body: timings.where((i) => i.startTime != null && i.endTime != null).map(

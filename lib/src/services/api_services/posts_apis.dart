@@ -10,7 +10,7 @@ abstract class PostsApi {
   static int limit = 15;
 
   static Future<List<PostModel>?> getPosts({String? profileID, int page = 0}) async {
-    String path = "/posts";
+    String path = "/v1/posts";
     final response = await ApiHelper.get(
       path,
       queryParams: {
@@ -27,25 +27,25 @@ abstract class PostsApi {
   }
 
   static Future<bool?> deletePost(String postId) async {
-    String path = "/posts/$postId";
+    String path = "/v1/posts/$postId";
     final resp = await ApiHelper.delete(path);
     return resp.fold<bool?>((l) => Toast.failure<bool?>(l.message), (r) => r.data != null);
   }
 
   static Future<PostMedia?> deletePostMedia(String postId, String mediaId) async {
-    String path = "/posts/$postId/medias/$mediaId";
+    String path = "/v1/posts/$postId/medias/$mediaId";
     final response = await ApiHelper.delete(path);
     return response.fold<PostMedia?>((l) => null, (r) => PostMedia.fromJson(r.data));
   }
 
   static Future<PostModel?> createUpdatePost(Map<String, dynamic> data) async {
-    String path = "/posts";
+    String path = "/v1/posts";
     final response = await ApiHelper.post(path, body: data);
     return response.fold<PostModel?>((l) => null, (r) => PostModel.fromJson(r.data));
   }
 
   static Future<List<PostMedia>> uploadPostMedias(String postId, List<FileX> files) async {
-    final path = "/posts/$postId/medias";
+    final path = "/v1/posts/$postId/medias";
     final response = await ApiHelper.uploadFile(path, files);
 
     return response.fold<List<PostMedia>>(
@@ -55,13 +55,13 @@ abstract class PostsApi {
   }
 
   static Future<PostLike?> likePost(String postId) async {
-    String path = "/posts/$postId/likes";
+    String path = "/v1/posts/$postId/likes";
     final response = await ApiHelper.post(path);
     return response.fold<PostLike?>((l) => null, (r) => PostLike.fromJson(r.data));
   }
 
   static Future<PostLike?> unlikePost(String postId) async {
-    String path = "/posts/$postId/likes";
+    String path = "/v1/posts/$postId/likes";
     final response = await ApiHelper.delete(path);
     return response.fold<PostLike?>((l) => null, (r) => PostLike.fromJson(r.data));
   }

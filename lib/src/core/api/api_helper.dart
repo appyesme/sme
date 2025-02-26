@@ -68,8 +68,8 @@ class ApiHelper {
   }
 
   static Uri _getUri(String path, {Map<String, dynamic>? queryParams}) {
-    final isHttps = apiUrlV1.startsWith("https://");
-    final schema = apiUrlV1.split("//")[1];
+    final isHttps = apiUrl.startsWith("https://");
+    final schema = apiUrl.split("//")[1];
     if (isHttps) return Uri.https(schema, path, convertQueryPararmsToHttpsFormat(queryParams));
     return Uri.http(schema, path, convertQueryPararmsToHttpsFormat(queryParams));
   }

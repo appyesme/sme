@@ -9,7 +9,7 @@ import '../../features/service_timings_page/models/service_timing_model.dart';
 @immutable
 abstract class AppointmentsApi {
   static Future<List<ServiceDayModel>?> getAppointmentAvailableDays(String? serviceID) async {
-    String path = "/appointments/available-days";
+    String path = "/v1/appointments/available-days";
     final response = await ApiHelper.get(path, queryParams: {"service_id": serviceID});
     return response.fold<List<ServiceDayModel>?>(
       (l) => null,
@@ -18,7 +18,7 @@ abstract class AppointmentsApi {
   }
 
   static Future<List<ServiceDayModel>?> verifyPaymentStatus(String? serviceID) async {
-    String path = "/appointments/available-days";
+    String path = "/v1/appointments/available-days";
     final response = await ApiHelper.get(path, queryParams: {"service_id": serviceID});
     return response.fold<List<ServiceDayModel>?>(
       (l) => null,
@@ -30,7 +30,7 @@ abstract class AppointmentsApi {
     String? serviceDayId,
     String? date,
   ) async {
-    String path = "/appointments/available-timings";
+    String path = "/v1/appointments/available-timings";
     final response = await ApiHelper.get(path, queryParams: {
       "service_day_id": serviceDayId,
       "date": date,
@@ -42,7 +42,7 @@ abstract class AppointmentsApi {
   }
 
   static Future<double?> getAppointmentPrice(String serviceId, bool homeServiceNeeded) async {
-    String path = "/appointments/price";
+    String path = "/v1/appointments/price";
     final response = await ApiHelper.get(
       path,
       queryParams: {
@@ -54,7 +54,7 @@ abstract class AppointmentsApi {
   }
 
   static Future<BookedAppointment?> bookAppointment(AppointmentModel appointment) async {
-    String path = "/appointments/book";
+    String path = "/v1/appointments/book";
     final response = await ApiHelper.post(path, body: {
       "service_id": appointment.serviceId,
       "service_timing_id": appointment.serviceTimingId,
@@ -67,13 +67,13 @@ abstract class AppointmentsApi {
   }
 
   static Future<bool> markAsCompleted(String appointmentId) async {
-    String path = "/appointments/$appointmentId/completed";
+    String path = "/v1/appointments/$appointmentId/completed";
     final response = await ApiHelper.post(path);
     return response.fold<bool>((l) => false, (r) => r.data != null);
   }
 
   static Future<AppointmentModel?> appointmentPaymentCompleted(AppointmentModel appointment) async {
-    String path = "/appointments/book";
+    String path = "/v1/appointments/book";
     final response = await ApiHelper.post(path, body: {
       "service_id": appointment.serviceId,
       "service_timing_id": appointment.serviceTimingId,
