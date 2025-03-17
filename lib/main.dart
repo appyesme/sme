@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'firebase_options.dart';
 import 'src/core/constants/kcolors.dart';
@@ -46,7 +47,10 @@ class MyApp extends ConsumerWidget {
         title: appName,
         debugShowCheckedModeBanner: false,
         routerConfig: routerConfig,
-        builder: (context, child) => OKToast(child: child!),
+        builder: (context, child) => UpgradeAlert(
+          showIgnore: false,
+          child: OKToast(child: child!),
+        ),
         theme: ThemeData(
           // useMaterial3: false,
           appBarTheme: const AppBarTheme(
