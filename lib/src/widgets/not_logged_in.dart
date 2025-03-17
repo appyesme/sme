@@ -48,7 +48,7 @@ class NotLoggedInWidget extends StatelessWidget {
                 SignInPage.route,
               );
             },
-            text: "Login in Now",
+            text: "Login Now",
             radius: 60,
             height: 40,
             fontSize: 14,

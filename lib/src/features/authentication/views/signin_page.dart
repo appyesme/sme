@@ -10,6 +10,7 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/app_text.dart';
 import '../../../widgets/text_field.dart';
 import '../providers/provider.dart';
+import 'dialog/joining_as_confirmation.dart';
 import 'signup_page.dart';
 
 class SignInPage extends ConsumerWidget {
@@ -83,9 +84,15 @@ class SignInPage extends ConsumerWidget {
                         color: KColors.black60,
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          ref.read(authProvider.notifier).update((state) => state.copyWith(joinAsEntrepreneur: false));
+
+                          final joinAsEntrepreneur = await showJoiningAsDialog(context);
+
+                          if (joinAsEntrepreneur == null) return;
+
+                          final provider = ref.read(authProvider.notifier);
+                          provider.update((state) => state.copyWith(joinAsEntrepreneur: joinAsEntrepreneur));
                           context.pushNamed(SignUpPage.route);
                         },
                         child: const AppText(

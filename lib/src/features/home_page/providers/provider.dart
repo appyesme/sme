@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/enums/enums.dart';
 import '../../../core/router/route_config.dart';
 import '../../../core/shared/auth_handler.dart';
+import '../../../core/shared/shared.dart';
 import '../../../services/api_services/auth_api.dart';
 import '../../../services/api_services/posts_apis.dart';
 import '../../add_post_page/models/post_model.dart';
@@ -59,7 +61,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   Future<List<PostModel>?> getPosts({bool refresh = false}) async {
     if (refresh) _page = 0;
-    final posts = (await PostsApi.getPosts(page: _page)) ?? <PostModel>[];
+    final profileID = userType == UserType.ENTREPRENEUR ? userId : null;
+    final posts = (await PostsApi.getPosts(page: _page, profileID: profileID)) ?? <PostModel>[];
     final updated = refresh ? posts : [...(state.posts ?? <PostModel>[]), ...posts];
     setState(state.copyWith(posts: updated));
     _page++;

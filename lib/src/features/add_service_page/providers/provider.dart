@@ -65,7 +65,7 @@ class AddServiceNotifier extends StateNotifier<AddServiceState> {
     final validated = formKey.currentState?.validate() ?? false;
     if (!validated) return;
 
-    final images = [...state.images ?? [], state.service.medias];
+    final images = [...(state.images ?? []), ...state.service.medias];
 
     if (images.isEmpty) return Toast.failure("Select images");
     if (!state.service.homeAvailable && !state.service.salonAvailable) {
