@@ -139,40 +139,40 @@ class SignUpPage extends ConsumerWidget {
                   text: "Sign Up",
                 ),
                 SizedBox(height: 40.px),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Flexible(
-                      child: AppText(
-                        "Join as Entrepreneur",
-                        fontWeight: FontWeight.w400,
-                        color: KColors.black60,
-                      ),
-                    ),
-                    SizedBox(width: 20.px),
-                    Consumer(
-                      builder: (_, WidgetRef ref, __) {
-                        final joinAsEntrepreneur = ref.watch(authProvider.select((value) => value.joinAsEntrepreneur));
-                        return Switch.adaptive(
-                          value: joinAsEntrepreneur,
-                          activeColor: KColors.purple,
-                          onChanged: (value) {
-                            final provider = ref.read(authProvider.notifier);
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     const Flexible(
+                //       child: AppText(
+                //         "Join as Entrepreneur",
+                //         fontWeight: FontWeight.w400,
+                //         color: KColors.black60,
+                //       ),
+                //     ),
+                //     SizedBox(width: 20.px),
+                //     Consumer(
+                //       builder: (_, WidgetRef ref, __) {
+                //         final joinAsEntrepreneur = ref.watch(authProvider.select((value) => value.joinAsEntrepreneur));
+                //         return Switch.adaptive(
+                //           value: joinAsEntrepreneur,
+                //           activeColor: KColors.purple,
+                //           onChanged: (value) {
+                //             final provider = ref.read(authProvider.notifier);
 
-                            provider.update(
-                              (state) => state.copyWith(
-                                joinAsEntrepreneur: value,
-                                documents: [],
-                                expertises: [],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40.px),
+                //             provider.update(
+                //               (state) => state.copyWith(
+                //                 joinAsEntrepreneur: value,
+                //                 documents: [],
+                //                 expertises: [],
+                //               ),
+                //             );
+                //           },
+                //         );
+                //       },
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(height: 40.px),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -132,10 +132,14 @@ class LoginNotifier extends StateNotifier<AuthState> {
 
             // If "Entrepreneur", token is null otherwise token will be available.
             DialogHelper.pop(context); // Close OTP dialog.
-            if (accountCreated["token"] != null) checkAuthenticated(context, accountCreated["token"]);
+            if (accountCreated["token"] != null) {
+              checkAuthenticated(context, accountCreated["token"]);
+            } else {
+              DialogHelper.pop(context); // Go back to signin page
+            }
+          } else {
+            DialogHelper.pop(context); // Go back to signin page.
           }
-
-          DialogHelper.pop(context); // Go back to signin page.
         }
       },
     );
