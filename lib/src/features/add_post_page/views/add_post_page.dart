@@ -42,7 +42,7 @@ class _AddPostPageState extends ConsumerState<AddPostPage> {
     return Scaffold(
       appBar: AppBar(
         title: const AppText(
-          "Create Service",
+          "Create post",
           fontSize: 20,
           color: KColors.white,
           fontWeight: FontWeight.w500,

@@ -6,7 +6,6 @@ import 'app_text.dart';
 
 class AppTimePicker extends StatelessWidget {
   final String? selectedTime;
-  final String? value;
   final String hintText;
   final DateTime? initialDate;
   final DateTime? firstDate;
@@ -18,7 +17,6 @@ class AppTimePicker extends StatelessWidget {
   const AppTimePicker({
     super.key,
     this.selectedTime,
-    this.value,
     this.hintText = "Select time",
     this.initialDate,
     this.firstDate,

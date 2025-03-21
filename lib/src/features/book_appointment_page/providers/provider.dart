@@ -33,7 +33,12 @@ class BookAppointmentNotifier extends StateNotifier<BookAppointmentState> {
   }
 
   void onDaySelected(DateTime day) {
-    setState(state.copyWith(selectedDay: day, selectedTiming: null, homeServiceNeeded: false));
+    setState(state.copyWith(
+      selectedDay: day,
+      selectedTiming: null,
+      homeServiceNeeded: false,
+      selectedTimeToAriveHome: null,
+    ));
     final serviceDayId = getServiceDayId(day.weekday);
     if (serviceDayId != null) getAppointmentAvailableTimings(serviceDayId);
   }
@@ -80,6 +85,7 @@ class BookAppointmentNotifier extends StateNotifier<BookAppointmentState> {
       startTime: state.selectedTiming?.startTime,
       endTime: state.selectedTiming?.endTime,
       homeServiceNeeded: state.homeServiceNeeded,
+      homeReachTime: state.selectedTimeToAriveHome,
     );
 
     DialogHelper.showloading(context);

@@ -62,6 +62,7 @@ abstract class AppointmentsApi {
       "start_time": appointment.startTime,
       "end_time": appointment.endTime,
       "home_service_needed": appointment.homeServiceNeeded,
+      "home_reach_time": appointment.homeReachTime,
     });
     return response.fold<BookedAppointment?>((l) => null, (r) => BookedAppointment.fromJson(r.data));
   }

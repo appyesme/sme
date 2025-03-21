@@ -122,6 +122,26 @@ class AppointmentCard extends ConsumerWidget {
               ],
             ),
             if (appointment.homeServiceNeeded) ...[
+              if (appointment.homeReachTime != null) ...[
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.directions_walk,
+                      size: 16,
+                      color: KColors.purple,
+                    ),
+                    const SizedBox(width: 10),
+                    Flexible(
+                      child: AppText(
+                        'Home visit time : ${"2006-10-25T${appointment.homeReachTime}".toDate("hh:mm a")}',
+                        maxLines: 1,
+                        color: KColors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 5),
               Row(
                 children: [
@@ -133,7 +153,7 @@ class AppointmentCard extends ConsumerWidget {
                   const SizedBox(width: 10),
                   Flexible(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
                         color: const Color(0xFFC83306),
@@ -141,12 +161,14 @@ class AppointmentCard extends ConsumerWidget {
                       child: const AppText(
                         'Home service needed',
                         maxLines: 1,
+                        fontSize: 12,
                         color: KColors.white,
                       ),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
             ],
             if (isENTREPRENEUR) ...[
               const Divider(),

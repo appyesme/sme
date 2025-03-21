@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/constants/kcolors.dart';
+import '../../../utils/custom_toast.dart';
 import '../../../utils/string_extension.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_text.dart';
+import '../../../widgets/expansion_tile.dart';
+import '../../../widgets/time_picker.dart';
 import '../../service_timings_page/views/widgets/time_slot_widget.dart';
 import '../providers/provider.dart';
 import 'widgets/calender_widget.dart';
@@ -91,6 +94,12 @@ class _BookAppointmentPageState extends ConsumerState<BookAppointmentPage> {
                         ),
                       );
 
+                      final timeToAriveHome = ref.watch(
+                        appointmentProvider.select(
+                          (value) => value.selectedTimeToAriveHome,
+                        ),
+                      );
+
                       return SliverPadding(
                         padding: const EdgeInsets.all(16.0),
                         sliver: SliverToBoxAdapter(
@@ -103,13 +112,53 @@ class _BookAppointmentPageState extends ConsumerState<BookAppointmentPage> {
                                 bgColor: KColors.grey1,
                                 onToggle: (value) {
                                   final provider = ref.read(appointmentProvider.notifier);
-                                  provider.update((state) => state.copyWith(homeServiceNeeded: value));
+                                  provider.update(
+                                    (state) => state.copyWith(
+                                      homeServiceNeeded: value,
+                                      selectedTimeToAriveHome: null,
+                                    ),
+                                  );
                                 },
                                 onTap: () {
                                   /// nothing to do here. Check [onToggle]
                                 },
                               ),
                               const SizedBox(height: 5),
+                              AppExpansionTile(
+                                expand: homeServiceNeeded,
+                                content: Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 20),
+                                  decoration: BoxDecoration(
+                                    color: KColors.grey1,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.all(12),
+                                  child: Row(
+                                    children: [
+                                      const Expanded(
+                                        child: AppText(
+                                          'Select a time for the provider to arrive to your home',
+                                          color: KColors.black,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      SizedBox(
+                                        width: 120,
+                                        child: AppTimePicker(
+                                          selectedTime: timeToAriveHome == null ? null : "2024-10-10T$timeToAriveHome",
+                                          hintText: "Select",
+                                          onChanged: (value) {
+                                            final time = value.split("T")[1];
+                                            final provider = ref.read(appointmentProvider.notifier);
+                                            provider.update((state) => state.copyWith(selectedTimeToAriveHome: time));
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: Row(
@@ -278,6 +327,11 @@ class _BookAppointmentPageState extends ConsumerState<BookAppointmentPage> {
                 ),
                 child: AppButton(
                   onTap: () async {
+                    final state = ref.read(appointmentProvider);
+                    if (state.homeServiceNeeded && state.selectedTimeToAriveHome == null) {
+                      return Toast.failure("Please select time to arrive home");
+                    }
+
                     ref.read(appointmentProvider.notifier).getPrice();
                     final proceed = await showFinalPriceDialog(context);
                     if (proceed == true) ref.read(appointmentProvider.notifier).bookAppointment(context);

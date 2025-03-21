@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../core/constants/kcolors.dart';
+import '../../../../utils/string_extension.dart';
 import '../../providers/provider.dart';
 
 class CalenderWidget extends ConsumerWidget {
@@ -22,11 +23,11 @@ class CalenderWidget extends ConsumerWidget {
       availableGestures: AvailableGestures.horizontalSwipe,
       focusedDay: selectedDay,
       currentDay: DateTime.now(),
-      // selectedDayPredicate: (day) {
-      //   final formated = "$day".toDate();
-      //   final selected = "$selectedDay".toDate();
-      //   return formated == selected ? true : false;
-      // },
+      selectedDayPredicate: (day) {
+        final formated = "$day".toDate();
+        final selected = "$selectedDay".toDate();
+        return formated == selected ? true : false;
+      },
       calendarFormat: CalendarFormat.month,
       firstDay: DateTime.now().subtract(const Duration(days: 1)),
       lastDay: DateTime.utc(2030, 3, 14),

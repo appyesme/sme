@@ -55,7 +55,6 @@ class AppDatePicker extends StatelessWidget {
           _text,
           textAlign: TextAlign.left,
           fontFamily: 'Poppins',
-          fontSize: 18,
           fontWeight: FontWeight.w500,
           color: selectedDate == null ? KColors.grey : KColors.white,
         ),
