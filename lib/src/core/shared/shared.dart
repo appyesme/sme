@@ -6,6 +6,7 @@ import '../enums/enums.dart';
 
 const String appName = "sme";
 const String appLogo = "assets/images/logo.png";
+const String supportEmail = "appyesme@gmail.com";
 
 String apiUrl = EnvOptions.API_URL;
 
