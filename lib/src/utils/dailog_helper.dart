@@ -10,10 +10,10 @@ abstract class DialogHelper {
   static pop(BuildContext context) => GoRouter.of(context).pop();
   static unfocus(BuildContext context) => FocusManager.instance.primaryFocus?.unfocus();
 
-  static showloading(BuildContext context, [String text = 'Please hold on']) {
+  static showloading(BuildContext context, {String text = 'Please hold on', bool isDismissible = true}) {
     showDialog(
       context: context,
-      // barrierDismissible: false,
+      barrierDismissible: isDismissible,
       barrierColor: Colors.black38,
       builder: (context) {
         return Column(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 
 import '../../core/api/api_helper.dart';
@@ -5,6 +7,7 @@ import '../../features/book_appointment_page/models/booked_appoinment.dart';
 import '../../features/payment_page/models/appointment_model.dart';
 import '../../features/service_timings_page/models/service_day_model.dart';
 import '../../features/service_timings_page/models/service_timing_model.dart';
+import '../../utils/custom_toast.dart';
 
 @immutable
 abstract class AppointmentsApi {
@@ -50,7 +53,10 @@ abstract class AppointmentsApi {
         "home_service_needed": homeServiceNeeded,
       },
     );
-    return response.fold<double?>((l) => null, (r) => double.tryParse("${r.data?["amount"]}")?.toDouble());
+    return response.fold<double?>((l) => null, (r) {
+      log("${r.data?["amount"]}");
+      return double.tryParse("${r.data?["amount"]}")?.toDouble();
+    });
   }
 
   static Future<BookedAppointment?> bookAppointment(AppointmentModel appointment) async {
@@ -65,6 +71,24 @@ abstract class AppointmentsApi {
       "home_reach_time": appointment.homeReachTime,
     });
     return response.fold<BookedAppointment?>((l) => null, (r) => BookedAppointment.fromJson(r.data));
+  }
+
+  static Future<AppointmentModel?> acceptAppointment(String appointmentId) async {
+    String path = "/v1/appointments/$appointmentId/accept";
+    final response = await ApiHelper.put(path);
+    return response.fold<AppointmentModel?>(
+      (l) => Toast.failure(l.message),
+      (r) => AppointmentModel.fromJson(r.data),
+    );
+  }
+
+  static Future<AppointmentModel?> rejectAppointment(String appointmentId) async {
+    String path = "/v1/appointments/$appointmentId/reject";
+    final response = await ApiHelper.put(path);
+    return response.fold<AppointmentModel?>(
+      (l) => Toast.failure(l.message),
+      (r) => AppointmentModel.fromJson(r.data),
+    );
   }
 
   static Future<bool> markAsCompleted(String appointmentId) async {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -184,6 +186,8 @@ class _ServiceDetailsPageState extends ConsumerState<ServiceDetailsPage> {
                                       strokeWidth: 2,
                                     );
                                   }
+
+                                  log(snapshot.data.toString());
 
                                   return AppText(
                                     '₹${snapshot.data ?? '-'}/-',

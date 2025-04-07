@@ -63,8 +63,10 @@ class BookAppointmentNotifier extends StateNotifier<BookAppointmentState> {
   }
 
   void getAppointmentAvailableTimings(String serviceDayID) async {
-    final timings =
-        await AppointmentsApi.getAppointmentAvailableDayTimings(serviceDayID, state.selectedDay?.toIso8601String());
+    final timings = await AppointmentsApi.getAppointmentAvailableDayTimings(
+      serviceDayID,
+      state.selectedDay?.toIso8601String(),
+    );
     setState(state.copyWith(timings: timings));
   }
 

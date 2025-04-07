@@ -54,6 +54,26 @@ class AppointmentsNotifier extends StateNotifier<AppointmentsState> {
     }
   }
 
+  Future<void> acceptAppointment(BuildContext context, String appointmentId) async {
+    DialogHelper.showloading(context, isDismissible: false);
+    var appointment = await AppointmentsApi.acceptAppointment(appointmentId);
+    DialogHelper.pop(context);
+    if (appointment == null) return;
+
+    final updated = state.appointments?.map((item) => item.id != appointmentId ? item : appointment).toList();
+    setState(state.copyWith(appointments: updated));
+  }
+
+  Future<void> rejectAppointment(BuildContext context, String appointmentId) async {
+    DialogHelper.showloading(context, isDismissible: false);
+    var appointment = await AppointmentsApi.rejectAppointment(appointmentId);
+    DialogHelper.pop(context);
+
+    if (appointment == null) return;
+    final updated = state.appointments?.map((item) => item.id != appointmentId ? item : appointment).toList();
+    setState(state.copyWith(appointments: updated));
+  }
+
   Future<void> markAsCompleted(BuildContext context, String appointmentId) async {
     DialogHelper.showloading(context);
     final bool status = await AppointmentsApi.markAsCompleted(appointmentId);

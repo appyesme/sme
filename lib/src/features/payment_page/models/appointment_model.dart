@@ -8,7 +8,7 @@ part 'appointment_model.freezed.dart';
 part 'appointment_model.g.dart';
 
 // ignore: constant_identifier_names
-enum AppointmentStatus { INITIATED, BOOKED, CANCELLED, ONGOING, COMPLETED }
+enum AppointmentStatus { INITIATED, BOOKED, ACCEPTED, REJECTED, COMPLETED }
 
 // Freezed model for Appointment
 @freezed

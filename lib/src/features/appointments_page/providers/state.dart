@@ -17,8 +17,9 @@ class AppointmentsState with _$AppointmentsState {
 extension AppointmentsStatusExt on AppointmentStatus {
   Color get color {
     if (this == AppointmentStatus.INITIATED) return const Color(0xFFE86A03);
-    if (this == AppointmentStatus.BOOKED) return const Color(0xFF04905B);
-    if (this == AppointmentStatus.CANCELLED) return const Color(0xFFD7B300);
+    if (this == AppointmentStatus.BOOKED) return const Color(0xFF203B31);
+    if (this == AppointmentStatus.ACCEPTED) return const Color(0xFF04905B);
+    if (this == AppointmentStatus.REJECTED) return const Color(0xFF905804);
     if (this == AppointmentStatus.COMPLETED) return const Color(0xFF0048D7);
 
     return const Color(0xFFE86A03);

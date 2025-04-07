@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/kcolors.dart';
 import '../../../../core/shared/shared.dart';
@@ -26,7 +25,8 @@ class AppointmentCard extends ConsumerWidget {
       appointment.payment?.status == PaymentStatus.PENDING;
 
   bool get isAppointmentCompleted => appointment.status == AppointmentStatus.COMPLETED;
-  bool get showMarkAsCompleted => appointment.status == AppointmentStatus.BOOKED;
+  bool get isBooked => appointment.status == AppointmentStatus.BOOKED;
+  bool get showMarkAsCompleted => appointment.status == AppointmentStatus.ACCEPTED;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +41,6 @@ class AppointmentCard extends ConsumerWidget {
         );
       },
       child: Container(
-        constraints: BoxConstraints(minHeight: 150.px),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: const Color(0xFFF9F8FF),
@@ -58,13 +57,13 @@ class AppointmentCard extends ConsumerWidget {
                   child: AppText(
                     appointment.service?.title ?? '',
                     maxLines: 2,
-                    fontSize: 16,
+                    fontSize: 12,
                     color: KColors.black,
                   ),
                 ),
                 const SizedBox(width: 5),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
                     color: appointment.status.color,
                     borderRadius: BorderRadius.circular(4),
@@ -82,7 +81,7 @@ class AppointmentCard extends ConsumerWidget {
             const Divider(),
             const AppText(
               "Date & Time",
-              fontSize: 12,
+              fontSize: 10,
               color: KColors.black40,
             ),
             const SizedBox(height: 5),
@@ -90,7 +89,7 @@ class AppointmentCard extends ConsumerWidget {
               children: [
                 const Icon(
                   CupertinoIcons.calendar,
-                  size: 16,
+                  size: 14,
                   color: KColors.purple,
                 ),
                 const SizedBox(width: 10),
@@ -98,6 +97,7 @@ class AppointmentCard extends ConsumerWidget {
                   child: AppText(
                     appointment.appointmentDate?.toDate("dd MMM, yyyy") ?? "",
                     maxLines: 1,
+                    fontSize: 12,
                     color: KColors.black,
                   ),
                 ),
@@ -108,7 +108,7 @@ class AppointmentCard extends ConsumerWidget {
               children: [
                 const Icon(
                   CupertinoIcons.time,
-                  size: 16,
+                  size: 14,
                   color: KColors.purple,
                 ),
                 const SizedBox(width: 10),
@@ -116,6 +116,7 @@ class AppointmentCard extends ConsumerWidget {
                   child: AppText(
                     '${"2006-10-25T${appointment.startTime}".toDate("hh:mm a")} - ${"2006-10-25T${appointment.endTime}".toDate("hh:mm a")}',
                     maxLines: 1,
+                    fontSize: 12,
                     color: KColors.black,
                   ),
                 ),
@@ -128,7 +129,7 @@ class AppointmentCard extends ConsumerWidget {
                   children: [
                     const Icon(
                       Icons.directions_walk,
-                      size: 16,
+                      size: 14,
                       color: KColors.purple,
                     ),
                     const SizedBox(width: 10),
@@ -136,6 +137,7 @@ class AppointmentCard extends ConsumerWidget {
                       child: AppText(
                         'Home visit time : ${"2006-10-25T${appointment.homeReachTime}".toDate("hh:mm a")}',
                         maxLines: 1,
+                        fontSize: 12,
                         color: KColors.black,
                       ),
                     ),
@@ -147,7 +149,7 @@ class AppointmentCard extends ConsumerWidget {
                 children: [
                   const Icon(
                     CupertinoIcons.home,
-                    size: 16,
+                    size: 14,
                     color: KColors.purple,
                   ),
                   const SizedBox(width: 10),
@@ -181,16 +183,16 @@ class AppointmentCard extends ConsumerWidget {
                       children: [
                         const AppText(
                           "Candidate details",
-                          fontSize: 12,
+                          fontSize: 10,
                           color: KColors.black40,
                         ),
-                        const SizedBox(height: 5),
                         Row(
                           children: [
                             Expanded(
                               child: AppText(
                                 appointment.candidate?.name ?? "",
                                 maxLines: 1,
+                                fontSize: 12,
                                 color: KColors.black,
                               ),
                             ),
@@ -207,7 +209,7 @@ class AppointmentCard extends ConsumerWidget {
                                   child: const Icon(
                                     CupertinoIcons.mail,
                                     color: KColors.white,
-                                    size: 18,
+                                    size: 14,
                                   ),
                                 ),
                               ),
@@ -224,7 +226,7 @@ class AppointmentCard extends ConsumerWidget {
                                 child: const Icon(
                                   CupertinoIcons.phone,
                                   color: KColors.white,
-                                  size: 18,
+                                  size: 14,
                                 ),
                               ),
                             ),
@@ -236,19 +238,69 @@ class AppointmentCard extends ConsumerWidget {
                 ],
               ),
             ],
-            if (isPaymentCompleted) ...[
-              const SizedBox(height: 10),
+            if (isBooked && isENTREPRENEUR) ...[
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppButton(
+                      onTap: () {
+                        final provider = ref.read(appointmentsProvider.notifier);
+                        provider.rejectAppointment(context, appointment.id!);
+                      },
+                      text: "Reject",
+                      fontSize: 14,
+                      height: 40,
+                      backgroundColor: Colors.red,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: AppButton(
+                      onTap: () {
+                        final provider = ref.read(appointmentsProvider.notifier);
+                        provider.acceptAppointment(context, appointment.id!);
+                      },
+                      text: "Approve",
+                      fontSize: 14,
+                      height: 40,
+                      backgroundColor: Colors.teal,
+                    ),
+                  )
+                ],
+              )
+            ] else if (isBooked && !isENTREPRENEUR) ...[
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: const Color(0xFFA8A8A8),
+                ),
+                child: const AppText(
+                  'Waiting for approval',
+                  maxLines: 1,
+                  fontSize: 12,
+                  color: KColors.white,
+                ),
+              ),
+            ] else if (isPaymentCompleted) ...[
+              const SizedBox(height: 4),
               AppButton(
                 onTap: () => ref.read(appointmentsProvider.notifier).completePayment(context, appointment.payment!),
                 text: "Complete payment",
+                fontSize: 14,
+                height: 40,
               )
             ] else if (isENTREPRENEUR && !isAppointmentCompleted && showMarkAsCompleted) ...[
-              const SizedBox(height: 10),
+              const SizedBox(height: 4),
               AppButton(
                 onTap: () => ref.read(appointmentsProvider.notifier).markAsCompleted(context, appointment.id!),
                 elevation: 0,
                 text: "Mark as completed",
                 backgroundColor: KColors.yellow800,
+                fontSize: 14,
+                height: 40,
               )
             ],
           ],

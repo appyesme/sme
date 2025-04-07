@@ -35,7 +35,7 @@ class EditProfileNotifier extends StateNotifier<UserModel?> {
     if (state == null) return;
 
     DialogHelper.unfocus(context);
-    DialogHelper.showloading(context, "Updating...");
+    DialogHelper.showloading(context, text: "Updating...");
     final updated = await UsersApi.updateUserDetails(state!);
     DialogHelper.pop(context);
     if (updated != null) {

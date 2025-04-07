@@ -4,7 +4,7 @@ part 'payment_model.freezed.dart';
 part 'payment_model.g.dart';
 
 // ignore: constant_identifier_names
-enum PaymentStatus { PENDING, PAID, FAILED, CANCELLED, REFUNDED }
+enum PaymentStatus { PENDING, PAID, FAILED, REFUND_INITIATED, REFUND_FAILED, REFUND_SETTLED, SETTLED }
 
 @freezed
 class PaymentModel with _$PaymentModel {
