@@ -70,7 +70,7 @@ class AppointmentCard extends ConsumerWidget {
                   ),
                   child: AppText(
                     appointment.status == AppointmentStatus.INITIATED ? "Payment Pending" : appointment.status.name,
-                    fontSize: 12,
+                    fontSize: 10,
                     maxLines: 1,
                     fontWeight: FontWeight.w500,
                     color: KColors.white,
