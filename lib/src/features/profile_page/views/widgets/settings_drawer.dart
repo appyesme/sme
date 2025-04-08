@@ -105,7 +105,7 @@ class SettingDrawer extends ConsumerWidget {
 
                 const Divider(height: 0, color: KColors.grey, thickness: 0.3),
                 SettingTile(
-                  onTap: () => "https://web-sme-app.web.app".openLink(),
+                  onTap: () => supportEmail.openEmail(),
                   title: "Support",
                   leading: const Icon(Icons.help, color: KColors.purple),
                 ),
