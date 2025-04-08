@@ -16,6 +16,7 @@ class BookAppointmentState with _$BookAppointmentState {
     ServiceTimingModel? selectedTiming,
     @Default(false) bool homeServiceNeeded,
     String? selectedTimeToAriveHome,
+    String? homeAddress,
     double? totalPrice,
   }) = _BookAppointmentState;
 }

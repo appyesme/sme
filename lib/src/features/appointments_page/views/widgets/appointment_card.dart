@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/kcolors.dart';
 import '../../../../core/shared/shared.dart';
+import '../../../../utils/custom_toast.dart';
 import '../../../../utils/string_extension.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_text.dart';
@@ -170,6 +172,38 @@ class AppointmentCard extends ConsumerWidget {
                   ),
                 ],
               ),
+              if (appointment.homeAddress != null) ...[
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      size: 14,
+                      color: KColors.purple,
+                    ),
+                    const SizedBox(width: 10),
+                    Flexible(
+                      child: AppText(
+                        appointment.homeAddress ?? '-',
+                        fontSize: 12,
+                        color: KColors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: appointment.homeAddress ?? ''));
+                        Toast.success("Address copied to clipboard");
+                      },
+                      child: const Icon(
+                        Icons.copy,
+                        size: 14,
+                        color: KColors.purple,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 5),
             ],
             if (isENTREPRENEUR) ...[

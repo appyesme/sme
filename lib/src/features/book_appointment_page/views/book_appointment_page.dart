@@ -8,6 +8,7 @@ import '../../../utils/string_extension.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_text.dart';
 import '../../../widgets/expansion_tile.dart';
+import '../../../widgets/text_field.dart';
 import '../../../widgets/time_picker.dart';
 import '../../service_timings_page/views/widgets/time_slot_widget.dart';
 import '../providers/provider.dart';
@@ -133,27 +134,46 @@ class _BookAppointmentPageState extends ConsumerState<BookAppointmentPage> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   padding: const EdgeInsets.all(12),
-                                  child: Row(
+                                  child: Column(
                                     children: [
-                                      const Expanded(
-                                        child: AppText(
-                                          'Select a time for the provider to arrive to your home',
-                                          color: KColors.black,
-                                          fontSize: 12,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Expanded(
+                                            child: AppText(
+                                              'Select a time to arrive home',
+                                              color: KColors.black,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          SizedBox(
+                                            width: 120,
+                                            child: AppTimePicker(
+                                              selectedTime:
+                                                  timeToAriveHome == null ? null : "2024-10-10T$timeToAriveHome",
+                                              hintText: "Select",
+                                              onChanged: (value) {
+                                                final time = value.split("T")[1];
+                                                final provider = ref.read(appointmentProvider.notifier);
+                                                provider
+                                                    .update((state) => state.copyWith(selectedTimeToAriveHome: time));
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(width: 10),
-                                      SizedBox(
-                                        width: 120,
-                                        child: AppTimePicker(
-                                          selectedTime: timeToAriveHome == null ? null : "2024-10-10T$timeToAriveHome",
-                                          hintText: "Select",
-                                          onChanged: (value) {
-                                            final time = value.split("T")[1];
-                                            final provider = ref.read(appointmentProvider.notifier);
-                                            provider.update((state) => state.copyWith(selectedTimeToAriveHome: time));
-                                          },
-                                        ),
+                                      // Address
+                                      const SizedBox(height: 10),
+                                      AppTextField(
+                                        filledColor: KColors.white,
+                                        minLines: 5,
+                                        maxLines: 5,
+                                        hintText: "Enter home address to find you",
+                                        validator: (value) => value == null ? "Required" : null,
+                                        onChanged: (value) {
+                                          final provider = ref.read(appointmentProvider.notifier);
+                                          provider.update((state) => state.copyWith(homeAddress: value));
+                                        },
                                       ),
                                     ],
                                   ),

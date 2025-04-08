@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/shared/shared.dart';
 import '../../../services/api_services/appointments_api.dart';
 import '../../../services/api_services/services_api.dart';
+import '../../../services/api_services/users_apis.dart';
 import '../../../utils/custom_toast.dart';
 import '../../../utils/dailog_helper.dart';
 import '../../landing_page/providers/provider.dart';
@@ -88,9 +90,16 @@ class BookAppointmentNotifier extends StateNotifier<BookAppointmentState> {
       endTime: state.selectedTiming?.endTime,
       homeServiceNeeded: state.homeServiceNeeded,
       homeReachTime: state.selectedTimeToAriveHome,
+      homeAddress: state.homeAddress,
     );
 
     DialogHelper.showloading(context);
+    final user = await UsersApi.getUserDetails(userId!);
+    if (user == null) {
+      DialogHelper.pop(context);
+      return Toast.failure("Something is wrong. Please try again");
+    }
+
     final bookedAppointment = await AppointmentsApi.bookAppointment(appoinment);
     DialogHelper.pop(context);
     if (bookedAppointment == null) return Toast.failure("Something is wrong. Please try again");
@@ -100,7 +109,7 @@ class BookAppointmentNotifier extends StateNotifier<BookAppointmentState> {
       final payment = PaymentModel(
         title: state.service?.title ?? "Booking Service",
         description: state.service?.description ?? "Booking Service",
-        phone: "9164825123",
+        phone: user.phone,
         email: "appyesme@gmail.com",
         amount: state.totalPrice!,
         status: PaymentStatus.PENDING,

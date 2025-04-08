@@ -28,6 +28,7 @@ class AppointmentModel with _$AppointmentModel {
     @Default(AppointmentStatus.INITIATED) AppointmentStatus status,
     @JsonKey(name: "home_service_needed") @Default(false) bool homeServiceNeeded,
     @JsonKey(name: "home_reach_time") String? homeReachTime,
+    @JsonKey(name: "home_address") String? homeAddress,
     Author? candidate,
 
     // Some other apis are using this
