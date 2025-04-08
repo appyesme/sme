@@ -89,7 +89,7 @@ PODS:
     - FirebaseSharedSwift (~> 11.0)
     - GoogleUtilities/Environment (~> 8.0)
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
-  - FirebaseRemoteConfigInterop (11.10.0)
+  - FirebaseRemoteConfigInterop (11.11.0)
   - FirebaseSessions (11.8.0):
     - FirebaseCore (~> 11.8.0)
     - FirebaseCoreExtension (~> 11.8.0)
@@ -99,7 +99,7 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 8.0)
     - nanopb (~> 3.30910.0)
     - PromisesSwift (~> 2.1)
-  - FirebaseSharedSwift (11.10.0)
+  - FirebaseSharedSwift (11.11.0)
   - Flutter (1.0.0)
   - fluttertoast (0.0.2):
     - Flutter
@@ -271,9 +271,9 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 6c963bd2a86aca0481eef4f48f5a4df783ae5917
   FirebasePerformance: 4db21c8ac5a967d38ca8625ce77f58a7abb59bc0
   FirebaseRemoteConfig: f63724461fd97f0d62f20021314b59388f3e8ef8
-  FirebaseRemoteConfigInterop: 7c9a9c65eff32cbb0f7bf8d18140612ad57dfcc6
+  FirebaseRemoteConfigInterop: 85bdce8babed7814816496bb6f082bc05b0a45e1
   FirebaseSessions: c4d40a97f88f9eaff2834d61b4fea0a522d62123
-  FirebaseSharedSwift: 1baacae75939499b5def867cbe34129464536a38
+  FirebaseSharedSwift: b1d32c3b29a911dc174bcf363f2f70bda9509d2f
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   fluttertoast: 21eecd6935e7064cc1fcb733a4c5a428f3f24f0f
   GoogleAppMeasurement: fc0817122bd4d4189164f85374e06773b9561896
